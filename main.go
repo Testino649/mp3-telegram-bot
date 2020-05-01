@@ -21,6 +21,12 @@ func main() {
 		return
 	}
 
+	b.Handle("/start", func(m *tb.Message) {
+		if _, err := b.Send(m.Sender, fmt.Sprintf(welcome, m.Sender.FirstName), tb.ModeHTML); err != nil {
+
+		}
+	})
+
 	b.Handle("/hello", func(m *tb.Message) {
 		if _, err := b.Send(m.Sender, fmt.Sprintf(hello, m.Sender.FirstName), tb.ModeHTML); err != nil {
 

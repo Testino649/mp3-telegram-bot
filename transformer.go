@@ -10,7 +10,8 @@ const (
 			Example : 
 			/search <i>The Weeknd</i>	`
 
-	allReply = "Made with ♥, try <b>/search<b>"
+	allReply = "Made with ♥, try <b>/search The Weeknd<b>"
+	welcome  = "Hi %s, Here you can search for a song. Please please try <b>/help</b> for help."
 )
 
 type Response struct {
