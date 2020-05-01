@@ -1,37 +1,52 @@
 package main
 
 import (
+	"fmt"
 	tb "gopkg.in/tucnak/telebot.v2"
 	"log"
 	"os"
+	"time"
 )
 
 func main() {
-	var (
-		port      = os.Getenv("PORT")
-		publicURL = os.Getenv("PUBLIC_URL") // you must add it to your config vars
-		token     = os.Getenv("TOKEN")      // you must add it to your config vars
-	)
 
-	webhook := &tb.Webhook{
-		Listen:   ":" + port,
-		Endpoint: &tb.WebhookEndpoint{PublicURL: publicURL},
-	}
+	b, err := tb.NewBot(tb.Settings{
+		Token:  os.Getenv("TOKEN"),
+		Poller: &tb.LongPoller{Timeout: 10 * time.Second},
+	})
 
-	pref := tb.Settings{
-		Token:  token,
-		Poller: webhook,
-	}
-
-	b, err := tb.NewBot(pref)
 	if err != nil {
 		log.Fatal(err)
+
+		return
 	}
 
 	b.Handle("/hello", func(m *tb.Message) {
-		b.Send(m.Sender, "Hi!")
+		if _, err := b.Send(m.Sender, fmt.Sprintf(hello, m.Sender.FirstName), tb.ModeHTML); err != nil {
+
+		}
+	})
+
+	b.Handle("/help", func(m *tb.Message) {
+		if _, err := b.Send(m.Sender, help, tb.ModeHTML); err != nil {
+
+		}
+	})
+
+	b.Handle("/search", func(m *tb.Message) {
+		if _, err := b.Send(m.Sender, getReply(m.Text), tb.ModeHTML); err != nil {
+			log.Println(err)
+		}
+	})
+
+	b.Handle(tb.OnText, func(m *tb.Message) {
+		if _, err := b.Send(m.Sender, allReply, tb.ModeHTML); err != nil {
+			log.Println(err)
+		}
 	})
 
 	b.Start()
+
+	log.Println("bot running....")
 
 }
