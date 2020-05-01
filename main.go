@@ -32,4 +32,6 @@ func main() {
 		b.Send(m.Sender, "Hi!")
 	})
 
+	b.Start()
+
 }
