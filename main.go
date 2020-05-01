@@ -5,14 +5,22 @@ import (
 	tb "gopkg.in/tucnak/telebot.v2"
 	"log"
 	"os"
-	"time"
 )
 
 func main() {
 
+	var (
+		port      = os.Getenv("PORT")
+		publicURL = os.Getenv("PUBLIC_URL")
+		token     = os.Getenv("TOKEN")
+	)
+
 	b, err := tb.NewBot(tb.Settings{
-		Token:  os.Getenv("TOKEN"),
-		Poller: &tb.LongPoller{Timeout: 10 * time.Second},
+		Token: token,
+		Poller: &tb.Webhook{
+			Listen:   ":" + port,
+			Endpoint: &tb.WebhookEndpoint{PublicURL: publicURL},
+		},
 	})
 
 	if err != nil {
