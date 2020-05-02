@@ -12,16 +12,17 @@ func getReply(q string) string {
 		return apiErrorMessage
 	}
 
-	if len(resp.Songs) == 0 {
+	if len(resp.Songs) == 0 || resp.Status != "ok"{
 		return apiQueryMessage
 	}
 
 	// Fetching only top 10 results
-	top10 := 11
+	top10 := 10
 	if top10 > len(resp.Songs) {
 		top10 = len(resp.Songs)
 	}
-	message, err := parseResponse(resp.Songs[:top10-1])
+
+	message, err := parseResponse(resp.Songs[:top10])
 
 	if err != nil {
 		log.Print(err)

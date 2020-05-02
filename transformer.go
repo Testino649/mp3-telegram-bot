@@ -15,8 +15,10 @@ const (
 )
 
 type Response struct {
+	// "ok" or "error"
 	Status string `json:"status"`
 	Songs  []Song `json:"data"`
+	Error  Error  `json:"error"`
 }
 type Song struct {
 	SourceID string `json:"source_id"`
@@ -28,4 +30,12 @@ type Song struct {
 	Download string `json:"download"`
 	Stream   string `json:"stream"`
 	Cover    string `json:"cover"`
+}
+
+type Error struct {
+	Message      string `json:"message"`
+	Code         int    `json:"code"`
+	CaptchaIndex int    `json:"captcha_index"`
+	CaptchaID    int64  `json:"captcha_id"`
+	CaptchaImg   string `json:"captcha_img"`
 }
