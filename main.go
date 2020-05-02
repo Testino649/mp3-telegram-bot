@@ -9,25 +9,15 @@ import (
 
 func main() {
 
-	var (
-		port      = os.Getenv("PORT")
-		publicURL = os.Getenv("PUBLIC_URL")
-		token     = os.Getenv("TOKEN")
-	)
+	var bb BotBuilder
 
-	b, err := tb.NewBot(tb.Settings{
-		Token: token,
-		Poller: &tb.Webhook{
-			Listen:   ":" + port,
-			Endpoint: &tb.WebhookEndpoint{PublicURL: publicURL},
-		},
-	})
-
-	if err != nil {
-		log.Fatal(err)
-
-		return
+	if os.Getenv("environment") == "dev" {
+		bb = Poller{}
+	} else {
+		bb = WebHook{}
 	}
+
+	b := getBot(bb)
 
 	b.Handle("/start", func(m *tb.Message) {
 		if _, err := b.Send(m.Sender, fmt.Sprintf(welcome, m.Sender.FirstName), tb.ModeHTML); err != nil {
@@ -48,7 +38,7 @@ func main() {
 	})
 
 	b.Handle("/search", func(m *tb.Message) {
-		if _, err := b.Send(m.Sender, getReply(m.Text), tb.ModeHTML); err != nil {
+		if _, err := b.Send(m.Sender, getReply(m.Payload), tb.ModeHTML); err != nil {
 			log.Println(err)
 		}
 	})
@@ -62,5 +52,11 @@ func main() {
 	b.Start()
 
 	log.Println("bot running....")
+
+}
+
+func getBot(bb BotBuilder) *tb.Bot {
+
+	return bb.getBot()
 
 }

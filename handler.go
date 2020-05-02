@@ -17,12 +17,12 @@ func getReply(q string) string {
 	}
 
 	// Fetching only top 10 results
-	top10 := 10
-	if top10 > len(resp.Songs) {
-		top10 = len(resp.Songs)
+	top15 := 15
+	if top15 > len(resp.Songs) {
+		top15 = len(resp.Songs)
 	}
 
-	message, err := parseResponse(resp.Songs[:top10])
+	message, err := parseResponse(resp.Songs[:top15])
 
 	if err != nil {
 		log.Print(err)
