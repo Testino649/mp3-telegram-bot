@@ -4,4 +4,5 @@ before_install:
   - go get github.com/stretchr/testify
 go:
   - "1.14"
+  - "master"
 script: make test
