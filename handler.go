@@ -12,7 +12,7 @@ func getReply(q string) string {
 		return apiErrorMessage
 	}
 
-	if len(resp.Songs) == 0 || resp.Status != "ok"{
+	if len(resp.Songs) == 0 || resp.Status != "ok" {
 		return apiQueryMessage
 	}
 
